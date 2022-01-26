@@ -11,7 +11,7 @@ const compileUtil = {
         let val
         if (expr.indexOf('{{') !== -1) {
             val = expr.replace(/\{\{(.+?)\}\}/g, (...args) => {
-                console.log(args)
+                // console.log(args)
                 return this.getVal(vm, args[1])
             })
         } else {
@@ -132,7 +132,8 @@ class MVue {
         this.$options = options
 
         if (this.$el) {
-            // 1.实现一个观察器
+            // 1.实现一个观察器 --- 观察数据
+            new Observer(this.$data)
             // 2.实现一个指令解析器
             new Compile(this.$el, this)
         }
