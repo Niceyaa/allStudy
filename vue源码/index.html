@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>vue源码解析</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+
+    <div id="app">
+        <h2>{{person.name}} -- {{person.age}}</h2>
+        <h3>{{person.fav}}</h3>
+        <ul>
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+        </ul>
+        <h3>{{msg}}</h3>
+        <div v-text="msg"></div>
+        <div v-text="person.fav"></div>
+        <div v-html="htmlStr"></div>
+        <input type="text" v-model='msg'>
+        <button @click='aClick'>点击事件</button>
+    </div>
+
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script> -->
+    <script src="./MVue.js"></script>
+    <script>
+        let vm = new MVue({
+            el: '#app',
+            data:{
+                person:{
+                    name: '小马哥',
+                    age:19,
+                    fav:'我的爱好呢'
+                },
+                msg:'学习MVVM原理',
+                htmlStr: '<strong>html字符串</strong>'
+            },
+            methods:{
+                aClick(){
+                    console.log("点击事件",this)
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
