@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        .rect {
+            width: 200px;
+            height: 200px;
+            border: 1px solid #000;
+            -margin: 200px auto;
+            position: relative;
+            left: 0;
+            top: 0;
+            text-align: center;
+        }
+
+        .rect>div {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border: 1px solid red;
+            background: #fff;
+            cursor: pointer;
+        }
+
+        .rect>div:hover {
+            background: red;
+        }
+
+        .l-t {
+            top: -5px;
+            left: -5px;
+        }
+
+        .r-t {
+            top: -5px;
+            right: -5px;
+        }
+
+        .l-b {
+            bottom: -5px;
+            left: -5px;
+        }
+
+        .r-b {
+            bottom: -5px;
+            right: -5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="rect">
+        <h2>ajskdlfjasdk</h2>
+        <div class="l-t"></div>
+        <div class="r-t"></div>
+        <div class="l-b"></div>
+        <div class="r-b"></div>
+    </div>
+    <script>
+        let rect = document.querySelector('.rect')
+        let downX = 0
+        let downY = 0
+        // 矩形拖动
+        rect.addEventListener('mousedown', (ev) => {
+            downX = ev.offsetX
+            downY = ev.offsetY
+            rect.addEventListener('mousemove', rectMoveFn)
+            rect.addEventListener('mouseout', () => {
+                rect.removeEventListener('mousemove', rectMoveFn)
+            })
+        })
+        rect.addEventListener('mouseup', (ev) => {
+            rect.removeEventListener('mousemove', rectMoveFn)
+        })
+        function rectMoveFn(ev) {
+            let x = ev.x
+            let y = ev.y
+            rect.style.top = y - downY + 'px'
+            rect.style.left = x - downX + 'px'
+        }
+
+        let LT = document.querySelector('.l-t')
+        let oldX = 0
+        let oldY = 0
+            let width = rect.clientWidth
+            let height = rect.clientHeight
+        LT.addEventListener('mousedown', ev => {
+            oldX = ev.x
+            oldY = ev.y
+            ev.stopPropagation();
+            this.addEventListener('mousemove', LTFn)
+        })
+        LT.addEventListener('mouseup', ev => {
+            ev.stopPropagation()
+            LT.removeEventListener('mousemove',LTFn)
+        })
+        function LTFn(ev) {
+            ev.stopPropagation();
+            let x = ev.x - oldX
+            let y = ev.y - oldY
+            console.log('x,y',x,y)
+            console.log('width,height',width,height,rect.clientWidth)
+            rect.style.width =width- x + 'px'
+            rect.style.height =height- y + 'px'
+        }
+    </script>
+</body>
+
+</html>
