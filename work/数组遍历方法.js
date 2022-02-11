@@ -90,3 +90,15 @@ let score = result.reduce((pre,cur)=>{
     return pre+cur.score
 },0)
 console.log('score',score)
+
+// sort方法：如果参数函数返回 1 表示
+// sort((a,b)=>a-b) 升序
+// sort((a,b)=>b-a) 降序
+arr.sort((a,b)=>a-b)
+console.log('sort------',arr)
+
+Array.prototype.mySort = mySort
+function mySort(fn){
+    console.log('this',this)
+}
+arr.mySort(1)
