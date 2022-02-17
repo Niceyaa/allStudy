@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>使用BFC解决margin垂直塌陷问题</title>
+    <style>
+        .HM {
+            width: 200px;
+            height: 200px;
+            margin: 100px;
+            background: red;
+        }
+
+        .bfc {
+            overflow: hidden;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- <div class="HM"></div>
+    <div class="HM"></div> -->
+    <div class="bfc">
+        <div class="HM"></div>
+    </div>
+    <div class="bfc">
+        <div class="HM"></div>
+    </div>
+</body>
+
+</html>
