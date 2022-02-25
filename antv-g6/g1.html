@@ -26,7 +26,9 @@
     <!-- 折线 -->
     <script src="https://unpkg.com/@antv/g6/build/plugin.edge.polyline.js"></script>
     <script>
-        $.getJSON('https://gw.alipayobjects.com/os/antvdemo/assets/data/algorithm-category.json', function (data) {
+        // $.getJSON('https://gw.alipayobjects.com/os/antvdemo/assets/data/algorithm-category.json', function (data) {
+        $.getJSON('./g1.json', function (data) {
+            console.log('data-------------',data)
             var graph = new G6.TreeGraph({
                 container: 'mountNode',
                 width: window.innerWidth,
@@ -90,7 +92,8 @@
                     },
                     label: node.id,
                     labelCfg: {
-                        position: node.children && node.children.length > 0 ? 'left' : node.x > centerX ? 'right' : 'left'
+                        // position: node.children && node.children.length > 0 ? 'left' : node.x > centerX ? 'right' : 'left'
+                        position: 'center'
                     }
                 };
             });
