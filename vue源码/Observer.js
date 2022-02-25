@@ -37,6 +37,7 @@ class Dep{
 }
 
 
+
 // 劫持所有的属性
 class Observer{
     constructor(data){
