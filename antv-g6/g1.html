@@ -14,6 +14,7 @@
             overflow: hidden;
             margin: 0;
         }
+
     </style>
 </head>
 
@@ -26,9 +27,60 @@
     <!-- 折线 -->
     <script src="https://unpkg.com/@antv/g6/build/plugin.edge.polyline.js"></script>
     <script>
+
+        var COLLAPSE_ICON = function COLLAPSE_ICON(x, y, r) {
+            return [['M', x, y], ['a', r, r, 0, 1, 0, r * 2, 0], ['a', r, r, 0, 1, 0, -r * 2, 0], ['M', x + 2, y], ['L', x + 2 * r - 2, y]];
+        };
+        var EXPAND_ICON = function EXPAND_ICON(x, y, r) {
+            return [['M', x, y], ['a', r, r, 0, 1, 0, r * 2, 0], ['a', r, r, 0, 1, 0, -r * 2, 0], ['M', x + 2, y], ['L', x + 2 * r - 2, y], ['M', x + r, y - r + 2], ['L', x + r, y + r - 2]];
+        };
         // $.getJSON('https://gw.alipayobjects.com/os/antvdemo/assets/data/algorithm-category.json', function (data) {
         $.getJSON('./g1.json', function (data) {
-            console.log('data-------------',data)
+            console.log('data-------------', data)
+            G6.registerNode('tree-node', {
+                drawShape: function drawShape(cfg, group) {
+                    var rect = group.addShape('rect', {
+                        attrs: {
+                            fill: '#fff',
+                            stroke: '#666'
+                        }
+                    });
+                    var content = cfg.name.replace(/(.{19})/g, '$1\n');
+                    var text = group.addShape('text', {
+                        attrs: {
+                            text: content,
+                            x: 0,
+                            y: 0,
+                            textAlign: 'left',
+                            textBaseline: 'middle',
+                            fill: '#666'
+                        }
+                    });
+                    var bbox = text.getBBox();
+                    var hasChildren = cfg.children && cfg.children.length > 0;
+                    if (hasChildren) {
+                        group.addShape('marker', {
+                            attrs: {
+                                x: bbox.maxX + 6,
+                                y: bbox.minX + bbox.height / 2 - 6,
+                                r: 6,
+                                symbol: COLLAPSE_ICON,
+                                stroke: '#666',
+                                lineWidth: 2
+                            },
+                            className: 'collapse-icon'
+                        });
+                    }
+                    rect.attr({
+                        x: bbox.minX - 4,
+                        y: bbox.minY - 6,
+                        width: bbox.width + (hasChildren ? 26 : 8),
+                        height: bbox.height + 12
+                    });
+                    return rect;
+                }
+            }, 'single-shape');
+
             var graph = new G6.TreeGraph({
                 container: 'mountNode',
                 width: window.innerWidth,
@@ -38,19 +90,23 @@
                     default: [{
                         type: 'collapse-expand',
                         onChange: function onChange(item, collapsed) {
-                            var data = item.get('model').data;
+                            var data = item.get('model');
+                            var icon = item.get('group').findByClassName('collapse-icon')
+                            icon.attr('symbol', collapsed ? EXPAND_ICON : COLLAPSE_ICON);
+                            console.log("onchange", item.get('group'))
                             data.collapsed = collapsed;
                             return true;
                         }
                     }, 'drag-canvas', 'zoom-canvas']
                 },
                 defaultNode: {
-                    size: 16,
+                    // size: 16,
+                    shape: 'tree-node',
                     anchorPoints: [[0, 0.5], [1, 0.5]],
-                    style: {
-                        fill: '#40a9ff',
-                        stroke: '#096dd9'
-                    }
+                    // style: {
+                    //     fill: '#40a9ff',
+                    //     stroke: '#096dd9'
+                    // }
                 },
                 defaultEdge: {
                     // shape: 'cubic-horizontal',
@@ -60,7 +116,7 @@
                     }
                 },
                 layout: {
-                    type: 'mindmap',
+                    type: 'compactBox',
                     direction: 'H',
                     getHeight: function getHeight() {
                         return 16;
@@ -92,8 +148,8 @@
                     },
                     label: node.id,
                     labelCfg: {
-                        // position: node.children && node.children.length > 0 ? 'left' : node.x > centerX ? 'right' : 'left'
-                        position: 'center'
+                        position: node.children && node.children.length > 0 ? 'left' : node.x > centerX ? 'right' : 'left'
+                        // position: 'center'
                     }
                 };
             });
