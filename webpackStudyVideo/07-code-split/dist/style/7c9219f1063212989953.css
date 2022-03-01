@@ -1,0 +1,16 @@
+/*!**********************************************************************************************************!*\
+  !*** css ../node_modules/css-loader/dist/cjs.js!../node_modules/less-loader/dist/cjs.js!./src/style.css ***!
+  \**********************************************************************************************************/
+.hello {
+  color: red;
+}
+
+/*!***********************************************************************************************************!*\
+  !*** css ../node_modules/css-loader/dist/cjs.js!../node_modules/less-loader/dist/cjs.js!./src/style.less ***!
+  \***********************************************************************************************************/
+body {
+  background: skyblue;
+}
+
+
+/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoic3R5bGUvN2M5MjE5ZjEwNjMyMTI5ODk5NTMuY3NzIiwibWFwcGluZ3MiOiI7OztBQUFBO0VBQ0k7QUFDSjs7Ozs7QUNEQTtFQUNJO0FBQUoiLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vLi9zcmMvc3R5bGUuY3NzIiwid2VicGFjazovLy8uL3NyYy9zdHlsZS5sZXNzIl0sInNvdXJjZXNDb250ZW50IjpbIi5oZWxsb3tcbiAgICBjb2xvcjogcmVkO1xufSIsIkBjb2xvcjpza3libHVlO1xuYm9keXtcbiAgICBiYWNrZ3JvdW5kOkBjb2xvcjtcbn0iXSwibmFtZXMiOltdLCJzb3VyY2VSb290IjoiIn0=*/

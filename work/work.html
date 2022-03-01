@@ -8,6 +8,27 @@
     </head>
     <body>
         <script src="./继承.js"></script>
+        <script>
+            async function A(){
+                console.log('a')
+                const a = await B()
+                // console.log('await',a)
+                console.log('c')
+            }
+            function B(){
+                console.log('b')
+                setTimeout(() => {
+                    console.log('f')
+                }, 2000);
+            }
+            A()
+            new Promise(resolve=>{
+                console.log('d')
+                resolve(1)
+            }).then(res=>{
+                console.log('e')
+            })
+        </script>
     </body>
 </html>
 
