@@ -31,19 +31,19 @@
     <script>
         let vm = new MVue({
             el: '#app',
-            data:{
-                person:{
+            data: {
+                person: {
                     name: '小马哥',
-                    age:19,
-                    fav:'我的爱好呢'
+                    age: 19,
+                    fav: '我的爱好呢'
                 },
-                msg:'学习MVVM原理',
+                msg: '学习MVVM原理',
                 htmlStr: '<strong>html字符串</strong>'
             },
-            methods:{
-                aClick(){
+            methods: {
+                aClick() {
                     this.person.name = 'zs'
-                    console.log("点击事件",this.msg)
+                    console.log("点击事件", this.msg)
                 }
             }
         })

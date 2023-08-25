@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    // let data = [
+    //     {
+    //         id:1,
+    //         list: [
+    //             {
+    //                 url:'1.png'
+    //             },
+    //             {
+    //                 url:'2.png'
+    //             },
+    //             {
+    //                 url:'3.png'
+    //             },
+    //         ]
+    //     }
+    // ]
+    // let temp = new Array(3)
+    let obj = {
+        id:0,
+        str: '初始值',
+    }
+    let temp = [
+        {
+            id:0,
+            str: '初始值',
+        },
+        {
+            id:1,
+            str: '初始值',
+        },
+        {
+            id:2,
+            str: '初始值',
+        }
+    ]
+    // temp.fill(obj)
+    // temp.fill({
+    //     id:0,
+    //     str: '初始值',
+    // })
+    console.log('初始temp',temp)
+    temp[0].str = '新的值'
+    console.log('新的temp',temp)
+</script>
+</body>
+</html>

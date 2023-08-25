@@ -31,188 +31,188 @@
 </head>
 
 <body>
-    <div id="mountNode"></div>
-    <script>/*Fixing iframe window.innerHeight 0 issue in Safari*/document.body.clientHeight;</script>
-    <script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.g6-3.1.1/build/g6.js"></script>
-    <script src="https://gw.alipayobjects.com/os/antv/assets/lib/jquery-3.2.1.min.js"></script>
-    <script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.hierarchy-0.5.0/build/hierarchy.js"></script>
-    <script src="https://unpkg.com/@antv/g6/build/plugin.edge.polyline.js"></script>
+<div id="mountNode"></div>
+<script>/*Fixing iframe window.innerHeight 0 issue in Safari*/document.body.clientHeight;</script>
+<script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.g6-3.1.1/build/g6.js"></script>
+<script src="https://gw.alipayobjects.com/os/antv/assets/lib/jquery-3.2.1.min.js"></script>
+<script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.hierarchy-0.5.0/build/hierarchy.js"></script>
+<script src="https://unpkg.com/@antv/g6/build/plugin.edge.polyline.js"></script>
 
-    <script>
-        // 折叠图标
-        const COLLAPSE_ICON = function COLLAPSE_ICON(x, y, r) {
-            return [
-                ['M', x - r, y - r],
-                ['a', r, r, 0, 1, 0, r * 2, 0],
-                ['a', r, r, 0, 1, 0, -r * 2, 0],
-                ['M', x + 2 - r, y - r],
-                ['L', x + r - 2, y - r],
-            ]
-        }
-        // 展开图标
-        const EXPAND_ICON = function EXPAND_ICON(x, y, r) {
-            return [
-                ['M', x - r, y - r],
-                ['a', r, r, 0, 1, 0, r * 2, 0],
-                ['a', r, r, 0, 1, 0, -r * 2, 0],
-                ['M', x + 2 - r, y - r],
-                ['L', x + r - 2, y - r],
-                ['M', x, y - 2 * r + 2],
-                ['L', x, y - 2],
-            ]
-        }
-        // 自定义连线
-        G6.registerEdge(
-            'line-arrow',
-            {
-                draw(cfg, group) {
-                    const { startPoint, endPoint } = cfg
-                    const keyShape = group.addShape('path', {
-                        attrs: {
-                            path: [
-                                ['M', startPoint.x, startPoint.y],
-                                ['L', endPoint.x / 3 + (2 / 3) * startPoint.x, startPoint.y], // 三分之一处
-                                ['L', endPoint.x / 3 + (2 / 3) * startPoint.x, endPoint.y], // 三分之二处
-                                ['L', endPoint.x, endPoint.y],
-                            ],
-                            stroke: cfg.target._cfg.model.fill || cfg.target._cfg.model.stroke,
-                            opacity: 0.3,
-                        },
-                        name: 'path-shape',
-                    })
-                    return keyShape
-                },
+<script>
+    // 折叠图标
+    const COLLAPSE_ICON = function COLLAPSE_ICON(x, y, r) {
+        return [
+            ['M', x - r, y - r],
+            ['a', r, r, 0, 1, 0, r * 2, 0],
+            ['a', r, r, 0, 1, 0, -r * 2, 0],
+            ['M', x + 2 - r, y - r],
+            ['L', x + r - 2, y - r],
+        ]
+    }
+    // 展开图标
+    const EXPAND_ICON = function EXPAND_ICON(x, y, r) {
+        return [
+            ['M', x - r, y - r],
+            ['a', r, r, 0, 1, 0, r * 2, 0],
+            ['a', r, r, 0, 1, 0, -r * 2, 0],
+            ['M', x + 2 - r, y - r],
+            ['L', x + r - 2, y - r],
+            ['M', x, y - 2 * r + 2],
+            ['L', x, y - 2],
+        ]
+    }
+    // 自定义连线
+    G6.registerEdge(
+        'line-arrow',
+        {
+            draw(cfg, group) {
+                const { startPoint, endPoint } = cfg
+                const keyShape = group.addShape('path', {
+                    attrs: {
+                        path: [
+                            ['M', startPoint.x, startPoint.y],
+                            ['L', endPoint.x / 3 + (2 / 3) * startPoint.x, startPoint.y], // 三分之一处
+                            ['L', endPoint.x / 3 + (2 / 3) * startPoint.x, endPoint.y], // 三分之二处
+                            ['L', endPoint.x, endPoint.y],
+                        ],
+                        stroke: cfg.target._cfg.model.fill || cfg.target._cfg.model.stroke,
+                        opacity: 0.3,
+                    },
+                    name: 'path-shape',
+                })
+                return keyShape
             },
-            'cubic-horizontal'
-        )
-        // 自定义节点
-        G6.registerNode(
-            'tree-node',
-            {
-                drawShape: function drawShape(cfg, group) {
-                    // 边框样式设置
-                    let rect = group.addShape('rect', {
+        },
+        'cubic-horizontal'
+    )
+    // 自定义节点
+    G6.registerNode(
+        'tree-node',
+        {
+            drawShape: function drawShape(cfg, group) {
+                // 边框样式设置
+                let rect = group.addShape('rect', {
+                    attrs: {
+                        fill: cfg.fill || '#fff', // 背景色
+                        stroke: cfg.fill ? '#fff' : '#40a9ff', // 边框色
+                        opacity: cfg.fill && cfg.depth ? 0.15 : 1, // 透明度
+                    },
+                    name: 'rect-shape',
+                })
+                if (cfg.depth == 2) {
+                    rect = group.addShape('rect', {
                         attrs: {
-                            fill: cfg.fill || '#fff', // 背景色
-                            stroke: cfg.fill ? '#fff' : '#40a9ff', // 边框色
-                            opacity: cfg.fill && cfg.depth ? 0.15 : 1, // 透明度
+                            fill: '#fff', // 背景色
+                            stroke: cfg.stroke, // 边框色
+                            opacity: 0.5, // 透明度
                         },
                         name: 'rect-shape',
                     })
-                    if (cfg.depth == 2) {
-                        rect = group.addShape('rect', {
-                            attrs: {
-                                fill: '#fff', // 背景色
-                                stroke: cfg.stroke, // 边框色
-                                opacity: 0.5, // 透明度
-                            },
-                            name: 'rect-shape',
-                        })
+                }
+                if (cfg.depth == 1) {
+                    console.log(group)
+                }
+                const content = cfg.name.replace(/(.{19})/g, '$1\n')
+                // 字体样式设置
+                const text = group.addShape('text', {
+                    attrs: {
+                        text: content,
+                        x: 0,
+                        y: 0,
+                        textAlign: 'left',
+                        textBaseline: 'middle',
+                        fill: cfg.depth ? '#000' : '#fff', // 字体颜色
+                    },
+                    name: 'rect-shape',
+                })
+                const bbox = text.getBBox()
+                const hasChildren = cfg.children && cfg.children.length > 0
+                // 第一级元素 增加数量显示
+                if (cfg.depth == 1) {
+                    // 目前写死距离
+                    const leftData = {
+                        '2': 4,
+                        '4': 16,
+                        '7': 34,
                     }
-                    if (cfg.depth == 1) {
-                        console.log(group)
-                    }
-                    const content = cfg.name.replace(/(.{19})/g, '$1\n')
-                    // 字体样式设置
-                    const text = group.addShape('text', {
+                    group.addShape('text', {
                         attrs: {
-                            text: content,
-                            x: 0,
-                            y: 0,
+                            text: 20,
+                            x: leftData[content.length],
+                            y: 20,
                             textAlign: 'left',
                             textBaseline: 'middle',
-                            fill: cfg.depth ? '#000' : '#fff', // 字体颜色
+                            fill: '#000', // 字体颜色
                         },
                         name: 'rect-shape',
                     })
-                    const bbox = text.getBBox()
-                    const hasChildren = cfg.children && cfg.children.length > 0
-                    // 第一级元素 增加数量显示
-                    if (cfg.depth == 1) {
-                        // 目前写死距离
-                        const leftData = {
-                            '2': 4,
-                            '4': 16,
-                            '7': 34,
-                        }
-                        group.addShape('text', {
+                    if (hasChildren) {
+                        group.addShape('marker', {
                             attrs: {
-                                text: 20,
-                                x: leftData[content.length],
-                                y: 20,
-                                textAlign: 'left',
-                                textBaseline: 'middle',
-                                fill: '#000', // 字体颜色
+                                x: cfg.x > 0 ? bbox.maxX + 14 : -16,
+                                y: bbox.minX + bbox.height + 2,
+                                r: 6,
+                                symbol: cfg.collapsed ? EXPAND_ICON : COLLAPSE_ICON,
+                                stroke: cfg.fill,
+                                lineWidth: 1,
                             },
-                            name: 'rect-shape',
+                            name: 'collapse-icon',
                         })
-                        if (hasChildren) {
-                            group.addShape('marker', {
-                                attrs: {
-                                    x: cfg.x > 0 ? bbox.maxX + 14 : -16,
-                                    y: bbox.minX + bbox.height + 2,
-                                    r: 6,
-                                    symbol: cfg.collapsed ? EXPAND_ICON : COLLAPSE_ICON,
-                                    stroke: cfg.fill,
-                                    lineWidth: 1,
-                                },
-                                name: 'collapse-icon',
-                            })
-                        }
+                    }
+                    rect.attr({
+                        x: hasChildren && cfg.x < 0 ? bbox.minX - 32 : bbox.minX - 16,
+                        y: bbox.minY - 16,
+                        width: hasChildren ? bbox.width + 48 : bbox.width + 32,
+                        height: bbox.height + 48,
+                        radius: 4,
+                    })
+                } else {
+                    // 无子数据 返回样式
+                    if (!hasChildren) {
                         rect.attr({
-                            x: hasChildren && cfg.x < 0 ? bbox.minX - 32 : bbox.minX - 16,
-                            y: bbox.minY - 16,
-                            width: hasChildren ? bbox.width + 48 : bbox.width + 32,
-                            height: bbox.height + 48,
+                            x: bbox.minX - 8,
+                            y: bbox.minY - 6,
+                            width: bbox.width + 16,
+                            height: bbox.height + 12,
                             radius: 4,
                         })
                     } else {
-                        // 无子数据 返回样式
-                        if (!hasChildren) {
+                        // 有子数据 非根元素
+                        if (cfg.depth) {
                             rect.attr({
-                                x: bbox.minX - 8,
+                                x: cfg.x > 0 ? bbox.minX - 8 : bbox.minX - 24,
                                 y: bbox.minY - 6,
-                                width: bbox.width + 16,
+                                width: cfg.x > 0 ? bbox.width + 32 : bbox.width + 30,
                                 height: bbox.height + 12,
                                 radius: 4,
                             })
                         } else {
-                            // 有子数据 非根元素
-                            if (cfg.depth) {
-                                rect.attr({
-                                    x: cfg.x > 0 ? bbox.minX - 8 : bbox.minX - 24,
-                                    y: bbox.minY - 6,
-                                    width: cfg.x > 0 ? bbox.width + 32 : bbox.width + 30,
-                                    height: bbox.height + 12,
-                                    radius: 4,
-                                })
-                            } else {
-                                rect.attr({
-                                    x: bbox.minX - 16,
-                                    y: bbox.minY - 16,
-                                    width: bbox.width + 32,
-                                    height: bbox.height + 32,
-                                    radius: 4,
-                                })
-                            }
+                            rect.attr({
+                                x: bbox.minX - 16,
+                                y: bbox.minY - 16,
+                                width: bbox.width + 32,
+                                height: bbox.height + 32,
+                                radius: 4,
+                            })
                         }
                     }
-                    return rect
-                },
+                }
+                return rect
             },
-            'single-node'
-        )
-        // 绘制大小
-        const width = document.getElementById('mountNode').scrollWidth
-        const height = document.body.clientHeight
-        // 工具栏
-        // const toolbar = new G6.ToolBar()
-        // mini图
-        // const minimap = new G6.Minimap()
+        },
+        'single-node'
+    )
+    // 绘制大小
+    const width = document.getElementById('mountNode').scrollWidth
+    const height = document.body.clientHeight
+    // 工具栏
+    // const toolbar = new G6.ToolBar()
+    // mini图
+    // const minimap = new G6.Minimap()
 
-        $.getJSON('https://gw.alipayobjects.com/os/antvdemo/assets/data/modeling-methods.json', function (Data) {
+    $.getJSON('https://gw.alipayobjects.com/os/antvdemo/assets/data/modeling-methods.json', function (Data) {
 // 基础配置
-const graph = new G6.TreeGraph({
+        const graph = new G6.TreeGraph({
             container: 'mountNode',
             width,
             height,
@@ -276,31 +276,31 @@ const graph = new G6.TreeGraph({
         graph.data(Data)
         graph.render()
         graph.fitView()
-        })
+    })
 
-        
-        // 事件监听
-        // graph.on('node:mouseenter', evt => {
-        //     const { item } = evt
-        //     if (item._cfg.model.depth == 1) {
-        //         item._cfg.keyShape.attrs.opacity = 0.3
-        //     }
-        //     if (item._cfg.model.depth == 2) {
-        //         item._cfg.keyShape.attrs.opacity = 1
-        //     }
-        //     graph.setItemState(item, 'hover', true)
-        // })
-        // graph.on('node:mouseleave', evt => {
-        //     const { item } = evt
-        //     if (item._cfg.model.depth == 1) {
-        //         item._cfg.keyShape.attrs.opacity = 0.15
-        //     }
-        //     if (item._cfg.model.depth == 2) {
-        //         item._cfg.keyShape.attrs.opacity = 0.3
-        //     }
-        //     graph.setItemState(item, 'hover', false)
-        // })
-    </script>
+
+    // 事件监听
+    // graph.on('node:mouseenter', evt => {
+    //     const { item } = evt
+    //     if (item._cfg.model.depth == 1) {
+    //         item._cfg.keyShape.attrs.opacity = 0.3
+    //     }
+    //     if (item._cfg.model.depth == 2) {
+    //         item._cfg.keyShape.attrs.opacity = 1
+    //     }
+    //     graph.setItemState(item, 'hover', true)
+    // })
+    // graph.on('node:mouseleave', evt => {
+    //     const { item } = evt
+    //     if (item._cfg.model.depth == 1) {
+    //         item._cfg.keyShape.attrs.opacity = 0.15
+    //     }
+    //     if (item._cfg.model.depth == 2) {
+    //         item._cfg.keyShape.attrs.opacity = 0.3
+    //     }
+    //     graph.setItemState(item, 'hover', false)
+    // })
+</script>
 </body>
 
 </html>

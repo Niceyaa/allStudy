@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>管道</title>
+	<style>
+		html, body {
+			margin: 0;
+			padding: 0;
+		}
+	</style>
+</head>
+<body>
+<script src="../../build/three.min.js"></script>
+<script src="../../examples/js/controls/OrbitControls.js"></script>
+<script>
+	const width = window.innerWidth
+	const height = window.innerHeight
+	// 宽高比
+	const k = width / height
+	// 三维场景显示范围系数，系数越大，显示的范围越大
+	const s = 200
+	// 场景
+	const scene = new THREE.Scene()
+	// 渲染器
+	const renderer = new THREE.WebGLRenderer()
+	renderer.setSize(width, height)
+	renderer.setClearColor(0xb9d3ff, 1)
+	// 相机
+	const camera = new THREE.OrthographicCamera(-s * k, s * k, s, -s, 1, 1000)
+	camera.position.set(100, 100, 100)
+	// 设置相机方向（指向的场景对象）
+	camera.lookAt(scene.position)
+
+	// 曲线
+	// const pathCurve3 = new THREE.CatmullRomCurve3([
+	// 	new THREE.Vector3(-10, -50, -50),
+	// 	new THREE.Vector3(10, 0, 0),
+	// 	new THREE.Vector3(8, 50, 50),
+	// 	new THREE.Vector3(-5, 0, 100)
+	// ])
+	// const geometryCurve3 = new THREE.TubeGeometry(pathCurve3, 400, 10, 25)
+	// const material = new THREE.MeshPhongMaterial({
+	// 	color: 0x00eee0
+	// })
+	// const lineCurve3 = new THREE.Line(geometryCurve3, material)
+	// scene.add(lineCurve3)
+
+	// 直线
+	// const pathLine = new THREE.LineCurve3(
+	// 		new THREE.Vector3(100, 0, 100),
+	// 		new THREE.Vector3(100, 100, 100)
+	// )
+	// const materialLine = new THREE.MeshPhongMaterial({
+	// 	color: 0x00eee0
+	// })
+	// const geometryLine = new THREE.TubeGeometry(pathLine, 400, 10, 100)
+	// const lineLine = new THREE.Line(geometryLine, materialLine)
+	// scene.add(lineLine)
+
+	const p1 = new THREE.Vector3(-85.35, -35.36)
+	const p2 = new THREE.Vector3(-50, 0, 0);
+	const p3 = new THREE.Vector3(0, 50, 0);
+	const p4 = new THREE.Vector3(50, 0, 0);
+	const p5 = new THREE.Vector3(85.35, -35.36);
+	const line1 = new THREE.LineCurve3(p1,p2)
+	const curve = new THREE.CatmullRomCurve3([p2,p3,p4])
+	const line2 = new THREE.LineCurve3(p4,p5)
+	const CurvePath = new THREE.CurvePath()
+	CurvePath.curves.push(line1,curve,line2)
+	const geometry = new THREE.TubeGeometry(CurvePath,100,5,25,false)
+	const material = new THREE.MeshPhongMaterial({
+		color: 0x000000
+	})
+	const Line = new THREE.Line(geometry,material)
+	scene.add(Line)
+
+	// 方向光
+	const directionalLight = new THREE.DirectionalLight(0xffffff, 1)
+	// 设置光源位置
+	directionalLight.position.set(60, 100, 40)
+	scene.add(directionalLight)
+
+
+	// 鼠标拖动
+	const control = new THREE.OrbitControls(camera, renderer.domElement)
+	control.addEventListener('change', render)
+
+	// 辅助坐标系
+	const axesHelper = new THREE.AxesHelper(2500)
+	scene.add(axesHelper)
+
+
+	document.body.appendChild(renderer.domElement)
+	render()
+
+	function render() {
+		renderer.render(scene, camera)
+	}
+</script>
+</body>
+</html>

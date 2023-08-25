@@ -1,0 +1,21 @@
+{
+    "name": "01",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "less": "^4.2.0",
+        "loadsh": "^0.0.4",
+        "lodash": "^4.17.21",
+        "lodash-es": "^4.17.21",
+        "postcss-preset-env": "^9.1.1",
+        "vite": "^4.4.7"
+    }
+}
