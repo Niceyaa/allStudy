@@ -45,7 +45,6 @@ const resolvePromise = (promise2, x, resolve, reject) => {
             resolve(x)
         }
     } else {
-        console.log('resolve(x)')
         resolve(x)
     }
 }
@@ -80,6 +79,7 @@ class MyPromise {
     }
 
     set status(newStatus) {
+        console.log('我改变了', newStatus)
         this._status = newStatus
         switch (newStatus) {
             case FULFILLED:
@@ -110,6 +110,7 @@ class MyPromise {
                     self.status = REJECTED
                 })
             }
+            console.log(' value instanceof MyPromise', value instanceof MyPromise, this.status)
             value instanceof MyPromise ? promiseFinish(value, this) : (this.value = value, this.status = FULFILLED)
         }
     }
@@ -127,6 +128,9 @@ class MyPromise {
         const realOnRejected = isFunction(onRejected) ? onRejected : v => {
             throw v
         }
+
+        // console.log('realOnFulfilled', realOnFulfilled)
+        // console.log('realOnRejected', realOnRejected)
         const promise2 = new MyPromise((resolve, reject) => {
             const fulfilledMicrotask = () => {
                 queueMicrotask(() => {
@@ -162,8 +166,6 @@ class MyPromise {
                     this.FULFILLED_CALLBACK_LIST.push(fulfilledMicrotask)
                     this.REJECTED_CALLBACK_LIST.push(rejectedMicrotask)
             }
-            console.log('this.FULFILLED_CALLBACK_LIST', this.FULFILLED_CALLBACK_LIST)
-            console.log('this.REJECTED_CALLBACK_LIST', this.REJECTED_CALLBACK_LIST)
         })
         return promise2
     }

@@ -5,6 +5,7 @@ import Index from '../views/Index/Index'
 import User from '../views/User/User'
 // 路由懒加载  --- 通过 routeOptions 下面的 lazy 属性去配置，会报错，暂不清楚原因
 const News = lazy(() => import('../views/News/News'))
+const Hook = lazy(() => import('../views/Hooks/UseMemoTest'))
 
 const Child01 = lazy(() => import('../views/User/child/Child01'))
 
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
         path: '/news/:id?',
         Component: News
         // lazy: () => import('../views/Index/Index'), // 会报错 暂不清楚原因
+    },
+    {
+        path: '/hook',
+        Component: Hook
     },
     // {
     //     // 路由加载器 会在路由加载之前调用，可以通过 useLoaderData 获取 loader 返回的数据 
