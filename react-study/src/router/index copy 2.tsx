@@ -1,15 +1,17 @@
-import { RouteObject, createBrowserRouter, Routes, Route, createRoutesFromElements, Navigate, useRoutes } from 'react-router-dom'
-import { lazy, Fragment } from 'react'
+import { RouteObject, createBrowserRouter } from 'react-router-dom'
+import { lazy } from 'react'
+import { Guard, RoutesHandler } from '../utils/permission'
 
 import Index from '../views/Index/Index'
 import User from '../views/User/User'
-import { Guard } from '../utils/permission'
 // 路由懒加载  --- 通过 routeOptions 下面的 lazy 属性去配置，会报错，暂不清楚原因
 const News = lazy(() => import('../views/News/News'))
 const Hook = lazy(() => import('../views/Hooks/UseMemoTest'))
 
 const Child01 = lazy(() => import('../views/User/child/Child01'))
-/* [
+
+// const routes: RouteObject[] = [
+const router = createBrowserRouter([
     {
         path: '/',
         element: <Index />
@@ -30,6 +32,17 @@ const Child01 = lazy(() => import('../views/User/child/Child01'))
         path: '/hook',
         element: Guard(<Hook />)
     },
+    // {
+    //     // 路由加载器 会在路由加载之前调用，可以通过 useLoaderData 获取 loader 返回的数据 
+    //     path: '/user',
+    //     // element: <User />,
+    //     Component: User,
+    //     loader: ({ request, params }) => {
+    //         console.log('request', request)
+    //         console.log('params', params)
+    //         return { data: 1 }
+    //     }
+    // },
     {
         // 路由嵌套
         path: '/user',
@@ -46,38 +59,10 @@ const Child01 = lazy(() => import('../views/User/child/Child01'))
             }
         ]
     }
-] */
-
-function Root() {
-    return (
-        <Routes>
-            <Route path='/' element={<Index />} />
-            <Route path='/news' element={
-                <AuthRoute element={<News></News>}></AuthRoute>
-                // <News></News>
-            } />
-
-            <Route path='/hook' element={<Hook />} />
-            <Route path='/user' element={<User />}>
-                {/* <Route path='child01' element={<Child01 />}></Route> */}
-            </Route>
-        </Routes>
-    )
-}
-
-
-function AuthRoute({ element: Component, ...rest }) {
-    console.log('路由拦截', Component, rest)
-    const isAuth = true
-    return (
-        <Route {...rest} element={
-            isAuth ? (Component) : (<Navigate to='/' replace />)
-        }></Route>
-    )
-}
+])
 
 
 // const router = createBrowserRouter(RoutesHandler(routes))
 
 
-export default Root
+export default router

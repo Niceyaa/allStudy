@@ -3,6 +3,9 @@ import { defineConfig } from "vite";
 import postcssPresetEnv from 'postcss-preset-env'
 const path = require('path')
 import aliasPlugin from "./src/plugins/aliasPlugin";
+import htmlPlugin from "./src/plugins/htmlPlugin";
+import mockPlugin from "./src/plugins/mockPlugin";
+import readConfigPlugin from "./src/plugins/readConfigPlugin";
 export default defineConfig({
     // resolve: {
     //     alias: { // 配置目录别名
@@ -56,6 +59,15 @@ export default defineConfig({
         assetsDir: 'assets', // 配置输出目录的静态资源目录
     },
     plugins: [
-        aliasPlugin()
+        aliasPlugin(),
+        htmlPlugin({
+            inject: {
+                data: {
+                    title: '主页'
+                }
+            }
+        }),
+        mockPlugin(),
+        readConfigPlugin()
     ]
 })

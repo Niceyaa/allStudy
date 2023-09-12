@@ -35,7 +35,6 @@ function PrimeCalculator({ obj }) {
         }
     }
     const testFn = () => {
-        console.log('进行计算')
         return 1
     }
 

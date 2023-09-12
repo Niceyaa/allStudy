@@ -1,13 +1,22 @@
-// import { Component } from 'react'
-// import { Navigate } from 'react-router-dom'
+import { ReactElement } from "react";
+import { RouteObject } from "react-router-dom";
 
-// const withAuth = (Component) => {
-//     const isLogin = true
-//     if (isLogin) {
-//         return <Component />
-//     } else {
-//         return <Navigate to='/' />
-//     }
-// }
+// 路由守卫
+export const Guard = (element: ReactElement) => {
+    console.log('路由拦截')
+    return element
+}
 
-// export default withAuth
+export const RoutesHandler = (router: RouteObject[]) => {
+    const newRouter = router.map(route => {
+        const { path, element, children } = route
+        const guardElement = Guard(element)
+        console.log('router', route)
+        return {
+            ...route,
+            element: guardElement,
+        }
+    })
+    return newRouter
+}
+

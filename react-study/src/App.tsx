@@ -1,10 +1,10 @@
 import { useState } from 'react'
-import Counter from './components/Counter/Counter'
+import { Routes, Route } from 'react-router-dom'
 
 function App() {
   console.log('我是父组件')
   return (
-    
+    <div></div>
   )
 }
 
